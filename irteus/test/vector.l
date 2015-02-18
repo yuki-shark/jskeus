@@ -1,5 +1,6 @@
 (require :unittest "lib/llib/unittest.l")
 
+(setq *s* (piped-fork "eusgl"))
 (init-unit-test)
 
 (deftest coerse
@@ -98,6 +99,16 @@
     (setq a2 (make-array (list 2 2)))
     (setq i2 (make-array (list 2 2) :element-type :integer))
     (setq f2 (make-array (list 2 2) :element-type :float))
+    ))
+
+(deftest piped-fork
+  (let (r)
+    (format *s* "(+ 1 2)~%")
+    (setq r (read *s*))
+    (assert (= r (+ 1 2)) "piped-fork")
+    (format *s* "(+ 3 4)~%")
+    (setq r (read *s*))
+    (assert (= r (+ 3 4)) "piped-fork")
     ))
 
 (run-all-tests)
